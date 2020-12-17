@@ -1,14 +1,38 @@
-CREATE DATABASE chat;
+DROP DATABASE IF EXISTS `chat`;
 
-USE chat;
+CREATE DATABASE `chat`;
 
-CREATE TABLE messages (
-  /* Describe your table here.*/
+USE `chat`;
+
+DROP TABLE IF EXISTS `messages`;
+
+CREATE TABLE `messages` (
+  `id` INTEGER AUTO_INCREMENT,
+  `username` INTEGER NULL DEFAULT NULL,
+  `body` TEXT NULL DEFAULT NULL,
+  `roomname` INTEGER NULL DEFAULT NULL,
+  `createdAt` VARCHAR(20) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
 );
 
-/* Create other tables and define schemas for them here! */
+DROP TABLE IF EXISTS `users`;
 
+CREATE TABLE `users` (
+  `id` INTEGER AUTO_INCREMENT,
+  `username` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
 
+DROP TABLE IF EXISTS `rooms`;
+
+CREATE TABLE `rooms` (
+  `id` INTEGER AUTO_INCREMENT,
+  `roomname` VARCHAR(100) NULL DEFAULT NULL,
+  PRIMARY KEY (`id`)
+);
+
+ALTER TABLE messages ADD FOREIGN KEY (username) REFERENCES users(id);
+ALTER TABLE messages ADD FOREIGN KEY (roomname) REFERENCES rooms(id);
 
 
 /*  Execute this file from the command line by typing:
