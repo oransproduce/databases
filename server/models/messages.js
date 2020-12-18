@@ -3,9 +3,9 @@ var users = require('./users.js');
 
 module.exports = {
   getAll: function (callback = () => { }) {
-    console.log('in get all fn');
+
     db.connection.query('SELECT messages.text AS text, messages.id AS id, messages.createdAt AS createdAt, messages.roomname AS roomname, users.username AS username FROM messages INNER JOIN users ON messages.username = users.id', (err, messages) => {
-      console.log(messages);
+
       if (err) {
         callback(err);
       } else {
@@ -14,13 +14,15 @@ module.exports = {
     });
   }, // a function which produces all the messages
   create: function (messageObj, callback = () => { }) {
-
-    db.connection.query('SELECT * FROM users where username = ?', [messageObj.username], (err, username) => {
+    console.log('inside messages create', messageObj);
+    db.connection.query('SELECT * FROM users WHERE username = ?', [messageObj.username], (err, username) => {
       if (err) {
         callback(err);
       } else {
         if (username.length === 0) {
-          users.create((err, results) => {
+          console.log(username);
+          users.create({username: messageObj.username}, (err, results) => {
+            console.log(results);
             db.connection.query('INSERT INTO messages (username, text, roomname) VALUES (?, ?, ?)', [results.insertId, messageObj.text, messageObj.roomname], (err, results) => {
               if (err) {
                 callback(err);
@@ -30,6 +32,7 @@ module.exports = {
             });
           });
         } else {
+          console.log(username);
           db.connection.query('INSERT INTO messages (username, text, roomname) VALUES (?, ?, ?)', [username[0].id, messageObj.text, messageObj.roomname], (err, results) => {
             if (err) {
               callback(err);

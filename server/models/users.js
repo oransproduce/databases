@@ -11,7 +11,9 @@ module.exports = {
     });
   },
   create: function (usersObj, callback = () => {}) {
+
     db.connection.query('INSERT INTO users (username) VALUES (?)', [usersObj.username], (err, results) => {
+
       if (err) {
         callback(err);
       } else {
