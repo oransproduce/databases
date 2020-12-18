@@ -12,8 +12,11 @@ var MessagesView = {
     MessagesView.$chats.html('');
     Messages
       .items()
-      .filter(message => Rooms.isSelected(message.roomname))
-      .each(message => MessagesView.renderMessage(message));
+      //.filter(message => Rooms.isSelected(message.roomname))
+      .each(message => {
+        console.log(message);
+        MessagesView.renderMessage(message);
+      });
   },
 
   renderMessage: function (message) {

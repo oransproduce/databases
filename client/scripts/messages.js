@@ -4,11 +4,11 @@ var Messages = {
   _data: {},
 
   items: function() {
-    return _.chain(Object.values(Messages._data)).sortBy('createdAt');
+    return _.chain(Object.values(Messages._data)).sortBy('id');
   },
 
   add: function(message, callback = ()=>{}) {
-    Messages._data[message.objectId] = message;
+    Messages._data[message.id] = message;
     callback(Messages.items());
   },
 
@@ -16,8 +16,10 @@ var Messages = {
     var length = Object.keys(Messages._data).length;
 
     for (let message of messages) {
-      Messages._data[message.objectId] = Messages._conform(message);
+      Messages._data[message.id] = Messages._conform(message);
     }
+
+    // console.log(Messages.items());
 
     // only invoke the callback if something changed
     if (Object.keys(Messages._data).length !== length) {

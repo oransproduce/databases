@@ -16,7 +16,7 @@ var FormView = {
       text: FormView.$form.find('#message').val(),
       roomname: Rooms.selected || 'lobby'
     };
-
+    console.log(message);
     Parse.create(message, (data) => {
       _.extend(message, data);
       Messages.add(message, MessagesView.render);
