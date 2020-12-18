@@ -11,7 +11,7 @@ describe('Persistent Node Chat Server', function () {
   beforeEach(function (done) {
     dbConnection = mysql.createConnection({
       user: 'root',
-      password: 'hrsf132',
+      password: '',
       database: 'chat'
     });
     dbConnection.connect();
@@ -79,6 +79,7 @@ describe('Persistent Node Chat Server', function () {
       // Now query the Node chat server and see if it returns
       // the message we just inserted:
       request('http://127.0.0.1:3000/classes/messages', function (error, response, body) {
+        console.log(body);
         var messageLog = JSON.parse(body);
         expect(messageLog[0].text).to.equal('Men like you can never change!');
         expect(messageLog[0].roomname).to.equal('main');

@@ -19,6 +19,7 @@ var FormView = {
     console.log(message);
     Parse.create(message, (data) => {
       _.extend(message, data);
+      debugger;
       Messages.add(message, MessagesView.render);
     });
   },

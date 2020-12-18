@@ -14,30 +14,37 @@ module.exports = {
     });
   }, // a function which produces all the messages
   create: function (messageObj, callback = () => { }) {
-    console.log('inside messages create', messageObj);
+    let date = new Date();
+    let dateString = '';
+    dateString += date.toLocaleDateString('en-US');
+    dateString += ' ' + date.toLocaleTimeString('en-US');
+    console.log(dateString);
+
     db.connection.query('SELECT * FROM users WHERE username = ?', [messageObj.username], (err, username) => {
       if (err) {
         callback(err);
       } else {
         if (username.length === 0) {
-          console.log(username);
+
           users.create({username: messageObj.username}, (err, results) => {
-            console.log(results);
-            db.connection.query('INSERT INTO messages (username, text, roomname) VALUES (?, ?, ?)', [results.insertId, messageObj.text, messageObj.roomname], (err, results) => {
+
+            db.connection.query('INSERT INTO messages (username, text, roomname, createdAt) VALUES (?, ?, ?, ?)', [results.insertId, messageObj.text, messageObj.roomname, dateString], (err, results, fields) => {
               if (err) {
                 callback(err);
               } else {
-                callback(null, results);
+
+                callback(null, {createdAt: dateString, id: results.insertId});
               }
             });
           });
         } else {
-          console.log(username);
-          db.connection.query('INSERT INTO messages (username, text, roomname) VALUES (?, ?, ?)', [username[0].id, messageObj.text, messageObj.roomname], (err, results) => {
+
+          db.connection.query('INSERT INTO messages (username, text, roomname, createdAt) VALUES (?, ?, ?, ?)', [username[0].id, messageObj.text, messageObj.roomname, dateString], (err, results, fields) => {
             if (err) {
               callback(err);
             } else {
-              callback(null, results);
+
+              callback(null, {createdAt: dateString, id: results.insertId});
             }
           });
         }

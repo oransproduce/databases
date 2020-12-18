@@ -17,13 +17,13 @@ var App = {
 
 
     // Poll for new messages every 3 sec
-    setInterval(App.fetch, 30000);
+    setInterval(App.fetch, 5000);
   },
 
   fetch: function (callback = () => { }) {
     Parse.readAll((data) => {
-      // debugger;
       // Don't bother to update if we have no messages
+      console.log(data);
       if (!data || !data.length) { return; }
 
       Rooms.update(data, RoomsView.render);
